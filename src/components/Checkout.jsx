@@ -35,15 +35,17 @@ export default function Checkout({ items, onClose, onComplete }) {
         })),
       });
 
-      // Automatically open WhatsApp with the pre-filled order message
-      if (result.whatsapp_url) {
-        window.open(result.whatsapp_url, '_blank');
-      }
-
+      // Update state in App to show confirmation
       onComplete(result);
+
+      // Redirect directly to WhatsApp (bypasses browser popup blockers on mobile & desktop)
+      if (result.whatsapp_url) {
+        setTimeout(() => {
+          window.location.href = result.whatsapp_url;
+        }, 150);
+      }
     } catch (submissionError) {
-      setError(submissionError.message);
-    } finally {
+      setError(submissionError.message || 'Unable to place order. Please try again.');
       setIsSubmitting(false);
     }
   };
@@ -88,7 +90,7 @@ export default function Checkout({ items, onClose, onComplete }) {
                   required
                   value={form.customer_name}
                   onChange={updateField('customer_name')}
-                  placeholder="e.g. Ali Ahmed"
+                  placeholder="e.g. Samad Codes"
                   className="mt-2 w-full border border-charcoal/20 bg-transparent px-4 py-3 text-sm font-normal normal-case tracking-normal text-charcoal outline-none focus:border-charcoal"
                   autoComplete="name"
                 />
@@ -100,7 +102,7 @@ export default function Checkout({ items, onClose, onComplete }) {
                   type="email"
                   value={form.customer_email}
                   onChange={updateField('customer_email')}
-                  placeholder="e.g. ali@gmail.com"
+                  placeholder="e.g. samadcodes57@gmail.com"
                   className="mt-2 w-full border border-charcoal/20 bg-transparent px-4 py-3 text-sm font-normal normal-case tracking-normal text-charcoal outline-none focus:border-charcoal"
                   autoComplete="email"
                 />
@@ -123,7 +125,7 @@ export default function Checkout({ items, onClose, onComplete }) {
                   required
                   value={form.city}
                   onChange={updateField('city')}
-                  placeholder="e.g. Karachi / Lahore / Islamabad"
+                  placeholder="e.g. Karachi"
                   className="mt-2 w-full border border-charcoal/20 bg-transparent px-4 py-3 text-sm font-normal normal-case tracking-normal text-charcoal outline-none focus:border-charcoal"
                   autoComplete="address-level2"
                 />
