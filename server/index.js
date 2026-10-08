@@ -107,5 +107,5 @@ app.post('/api/orders', orderLimiter, handleOrder);
 
 app.listen(PORT, () => {
   console.log(`🚀 ADAAB WhatsApp Order Backend running on http://localhost:${PORT}`);
-  console.log(`📱 Destination WhatsApp: ${process.env.WHATSAPP_PHONE || '923232788145'}`);
+  console.log(`📱 Destination WhatsApp: ${process.env.WHATSAPP_PHONE || '923258454946'}`);
 });

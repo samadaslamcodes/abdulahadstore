@@ -3,7 +3,7 @@
  * 100% Standalone: Works seamlessly on Netlify, Vercel, and GitHub Pages with ZERO backend server needed.
  */
 export const STORE_WHATSAPP_PHONE =
-  import.meta.env.VITE_WHATSAPP_PHONE || '923232788145';
+  import.meta.env.VITE_WHATSAPP_PHONE || '923258454946';
 
 /**
  * Format order into the exact WhatsApp layout

@@ -114,7 +114,7 @@ export default function Checkout({ items, onClose, onComplete }) {
                   type="tel"
                   value={form.customer_phone}
                   onChange={updateField('customer_phone')}
-                  placeholder="e.g. 03232788145"
+                  placeholder="e.g. 03258454946"
                   className="mt-2 w-full border border-charcoal/20 bg-transparent px-4 py-3 text-sm font-normal normal-case tracking-normal text-charcoal outline-none focus:border-charcoal"
                   autoComplete="tel"
                 />

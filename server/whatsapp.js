@@ -63,7 +63,7 @@ Time: ${orderTime}`;
  * Generates direct wa.me link with prefilled order text
  */
 export function generateWhatsAppUrl(order, phone) {
-  const targetPhone = (phone || process.env.WHATSAPP_PHONE || '923232788145').replace(/\D/g, '');
+  const targetPhone = (phone || process.env.WHATSAPP_PHONE || '923258454946').replace(/\D/g, '');
   const message = formatOrderMessage(order);
   return `https://wa.me/${targetPhone}?text=${encodeURIComponent(message)}`;
 }
@@ -73,7 +73,7 @@ export function generateWhatsAppUrl(order, phone) {
  */
 export async function sendWhatsAppNotification(order) {
   const message = formatOrderMessage(order);
-  const targetPhone = (process.env.WHATSAPP_PHONE || '923232788145').replace(/\D/g, '');
+  const targetPhone = (process.env.WHATSAPP_PHONE || '923258454946').replace(/\D/g, '');
   const callMeBotKey = process.env.CALLMEBOT_API_KEY;
 
   console.log('\n=================== NEW ORDER RECEIVED ===================');
