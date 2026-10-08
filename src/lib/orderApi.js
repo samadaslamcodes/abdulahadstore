@@ -1,12 +1,37 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? '/api';
-
+/**
+ * Client-Side Order API
+ * Sends checkout orders to backend POST /api/order
+ */
 export async function submitOrder(order) {
-  const response = await fetch(`${API_BASE_URL}/orders`, {
+  const response = await fetch('/api/order', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    },
     body: JSON.stringify(order),
   });
-  const result = await response.json().catch(() => ({}));
-  if (!response.ok) throw new Error(result.error ?? 'Unable to place the order.');
-  return result;
+
+  const data = await response.json().catch(() => ({}));
+
+  if (!response.ok) {
+    throw new Error(
+      data.error || 'Unable to place your order. Please check your details or contact us on WhatsApp.'
+    );
+  }
+
+  // Save client order backup in localStorage
+  try {
+    const existing = JSON.parse(localStorage.getItem('adaab_orders') || '[]');
+    existing.unshift({
+      ...order,
+      order_number: data.order_number,
+      created_at: new Date().toISOString(),
+    });
+    localStorage.setItem('adaab_orders', JSON.stringify(existing));
+  } catch (err) {
+    // Silent fail for storage quotas
+  }
+
+  return data;
 }

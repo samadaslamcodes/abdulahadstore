@@ -22,25 +22,47 @@ export default function App() {
     setCartItems((current) => {
       const existing = current.find((item) => item.productId === product.id && item.size === size);
       if (existing) {
-        return current.map((item) => item.productId === product.id && item.size === size
-          ? { ...item, qty: Math.min(10, item.qty + quantity) }
-          : item);
+        return current.map((item) =>
+          item.productId === product.id && item.size === size
+            ? { ...item, qty: Math.min(10, item.qty + quantity) }
+            : item
+        );
       }
-      return [...current, { productId: product.id, name: product.name, price: product.price, image: product.image, size, qty: quantity }];
+      return [
+        ...current,
+        {
+          productId: product.id,
+          name: product.name,
+          price: product.price,
+          image: product.image,
+          size,
+          qty: quantity,
+        },
+      ];
     });
     setCartOpen(true);
   };
 
   const updateQuantity = (productId, size, quantity) => {
     if (quantity < 1) {
-      setCartItems((current) => current.filter((item) => !(item.productId === productId && item.size === size)));
+      setCartItems((current) =>
+        current.filter((item) => !(item.productId === productId && item.size === size))
+      );
       return;
     }
-    setCartItems((current) => current.map((item) => item.productId === productId && item.size === size ? { ...item, qty: Math.min(10, quantity) } : item));
+    setCartItems((current) =>
+      current.map((item) =>
+        item.productId === productId && item.size === size
+          ? { ...item, qty: Math.min(10, quantity) }
+          : item
+      )
+    );
   };
 
   const removeItem = (productId, size) => {
-    setCartItems((current) => current.filter((item) => !(item.productId === productId && item.size === size)));
+    setCartItems((current) =>
+      current.filter((item) => !(item.productId === productId && item.size === size))
+    );
   };
 
   const openCheckout = () => {
@@ -51,13 +73,16 @@ export default function App() {
   const completeOrder = (result) => {
     setCheckoutOpen(false);
     setCartItems([]);
-    setConfirmedOrder(result.order_number);
+    setConfirmedOrder(result);
   };
 
   return (
     <div className="min-h-screen bg-cream text-charcoal font-inter flex flex-col selection:bg-charcoal selection:text-cream">
       <AnnouncementBar />
-      <Navbar cartCount={cartItems.reduce((total, item) => total + item.qty, 0)} onOpenCart={() => setCartOpen(true)} />
+      <Navbar
+        cartCount={cartItems.reduce((total, item) => total + item.qty, 0)}
+        onOpenCart={() => setCartOpen(true)}
+      />
       <main className="flex-grow">
         <Hero />
         <CategoryStrip onSelectProduct={setSelectedProduct} />
@@ -65,11 +90,35 @@ export default function App() {
         <EmailSignup />
       </main>
       <Footer />
-      {selectedProduct && <ProductModal product={selectedProduct} onClose={() => setSelectedProduct(null)} onAddToCart={addToCart} />}
-      {cartOpen && <CartDrawer items={cartItems} onClose={() => setCartOpen(false)} onUpdateQuantity={updateQuantity} onRemove={removeItem} onCheckout={openCheckout} />}
-      {checkoutOpen && <Checkout items={cartItems} onClose={() => setCheckoutOpen(false)} onComplete={completeOrder} />}
-      {confirmedOrder && <OrderConfirmed orderNumber={confirmedOrder} onClose={() => setConfirmedOrder(null)} />}
+      {selectedProduct && (
+        <ProductModal
+          product={selectedProduct}
+          onClose={() => setSelectedProduct(null)}
+          onAddToCart={addToCart}
+        />
+      )}
+      {cartOpen && (
+        <CartDrawer
+          items={cartItems}
+          onClose={() => setCartOpen(false)}
+          onUpdateQuantity={updateQuantity}
+          onRemove={removeItem}
+          onCheckout={openCheckout}
+        />
+      )}
+      {checkoutOpen && (
+        <Checkout
+          items={cartItems}
+          onClose={() => setCheckoutOpen(false)}
+          onComplete={completeOrder}
+        />
+      )}
+      {confirmedOrder && (
+        <OrderConfirmed
+          orderData={confirmedOrder}
+          onClose={() => setConfirmedOrder(null)}
+        />
+      )}
     </div>
   );
 }
-
